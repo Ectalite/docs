@@ -1,7 +1,8 @@
-# Quick Start
+# Démarrage rapide
+
 ---
 
-GoAdmin makes it easy to use in various web frameworks through various adapters. Currently supported web frameworks are:
+GoAdmin est facile à utiliser dans divers frameworks web grâce à divers adaptateurs. Les frameworks web actuellement supportés sont :
 
 - [gin](http://github.com/gin-gonic/gin)
 - [beego](https://github.com/astaxie/beego)
@@ -15,20 +16,20 @@ GoAdmin makes it easy to use in various web frameworks through various adapters.
 
 <br>
 
-You can choose the framework which your own project is using. If there is no framework you like, please feel free to give us an issue or pr!
+Vous pouvez opter pour le framework que votre projet utilise. S'il n'y a pas de framework qui vous convient, n'hésitez pas à nous faire part d'un problème (issue) ou d'un PR (Pull request) !
 
-Let's take the gin framework as an example to demonstrate the build process.
+Prenons le framework gin comme exemple pour démontrer le processus de création.
 
 ## main.go
 
-Firstly, create a new ```main.go``` file in your project folder with the following contents:
+Tout d'abord, créez un nouveau fichier `main.go` dans le dossier de votre projet avec le contenu suivant:
 
 ```go
 package main
 
 import (
-	_ "github.com/GoAdminGroup/go-admin/adapter/gin" // Import the adapter, it must be imported. If it is not imported, you need to define it yourself.
-	_ "github.com/GoAdminGroup/themes/adminlte" // Import the theme
+	_ "github.com/GoAdminGroup/go-admin/adapter/gin" // Importez l'adaptateur, il doit être importé. S'il n'est pas importé, vous devez le définir vous-même.
+	_ "github.com/GoAdminGroup/themes/adminlte" // Importer le thème
 	_ "github.com/GoAdminGroup/go-admin/modules/db/drivers/mysql"
 	"github.com/GoAdminGroup/go-admin/engine"
 	"github.com/GoAdminGroup/go-admin/examples/datamodel"
@@ -41,10 +42,10 @@ import (
 func main() {
 	r := gin.Default()
 
-	// Instantiate a GoAdmin engine object.
+	// Instancie un objet moteur GoAdmin.
 	eng := engine.Default()
 
-	// GoAdmin global configuration, can also be written as a json to be imported.
+	// Configuration globale de GoAdmin, peut aussi être écrite en json pour être importée.
 	cfg := config.Config{
 		Databases: []config.Database{
 			{
@@ -58,16 +59,16 @@ func main() {
 				Driver:       "mysql",
 			},
 		},
-		UrlPrefix: "admin", // The url prefix of the website.
-		// Store must be set and guaranteed to have write access, otherwise new administrator users cannot be added.
+		UrlPrefix: "admin", // Le préfixe url du site web.
+		// Le Store doit être défini et garanti comme ayant un accès en écriture, sinon les nouveaux utilisateurs administrateurs ne pourront pas être ajoutés.
 		Store: config.Store{
 			Path:   "./uploads",
 			Prefix: "uploads",
 		},
-		Language: language.EN,
+		Language: language.FR,
 	}
 
-	// Add configuration and plugins, use the Use method to mount to the web framework.
+	// Ajoutez la configuration et les plugins, utilisez la méthode Use pour accéder au framework web.
 	_ = eng.AddConfig(cfg).
 		// About Generators，see: https://github.com/GoAdminGroup/go-admin/blob/master/examples/datamodel/tables.go
 		AddGenerators(datamodel.Generators).
@@ -77,30 +78,30 @@ func main() {
 }
 ```
 
-Please pay attention to the above code and comments, the corresponding steps are added to the comments, it is simple to use. Summary of up to five steps:
+Veuillez prêter attention au code et aux commentaires ci-dessus, les étapes correspondantes sont ajoutées aux commentaires, il est simple à utiliser. Voici le résumé en 5 étapes :
 
-- Import the adapter, the theme and the sql driver
-- Set global configuration items
-- Initialize the plugin
-- Set up plugins and configurations
-- Mounted to the web framework
+- Importez l'adaptateur, le thème et le pilote sql.
+- Définir les éléments de configuration globale
+- Initialiser le plugin
+- Configurer les plugins et les paramètres
+- accéder au framework web
 
 <br>
 
-Then execute ```go run main.go``` to run the code and access: [http://localhost:9033/admin/login](http://localhost:9033/admin/login) <br>
+Ensuite, exécutez `go run main.go` pour exécuter le code et accéder à: [http://localhost:9033/admin/login](http://localhost:9033/admin/login) <br>
 <br>
-default account: admin<br>
-default password: admin
+compte utilisateur par défaut: admin<br>
+mot de passe par défaut: admin
 
-more web framework example: [https://github.com/GoAdminGroup/go-admin/tree/master/examples](https://github.com/GoAdminGroup/go-admin/tree/master/examples)
+plus d'exemple de framework web : [https://github.com/GoAdminGroup/go-admin/tree/master/examples](https://github.com/GoAdminGroup/go-admin/tree/master/examples)
 
-## Add your own business table for management
+## Ajoutez vos propres tables métiers pour la gestion
 
 See：<br><br>
-1 [How To Use Plugins](plugins/plugins)<br>
-2 [How To Use Admin Plugin](plugins/admin)
+1 [Comment utiliser les plugins](plugins/plugins)<br>
+2 [Comment utiliser le plugin Admin](plugins/admin)
 
-## Global configuration item description
+## Description de l'élément de configuration globale
 
 [https://github.com/GoAdminGroup/go-admin/blob/master/modules/config/config.go](https://github.com/GoAdminGroup/go-admin/blob/master/modules/config/config.go)
 
@@ -111,11 +112,12 @@ import (
 	"html/template"
 )
 
-// Database is a type of database connection config.
-// Because a little difference of different database driver.
-// The Config has multiple options but may be not used.
-// Such as the sqlite driver only use the FILE option which
-// can be ignored when the driver is mysql.
+// La base de données est un type de configuration de connexion de base de données.
+// Parce qu'il y a une petite différence entre les différents pilotes de base de données.
+// La configuration comporte plusieurs options mais peut ne pas être utilisée.
+// Par exemple, le pilote sqlite n'utilise que l'option FILE
+// qui peut être ignorée lorsque le pilote est mysql.
+
 type Database struct {
 	Host         string
 	Port         string
@@ -128,103 +130,105 @@ type Database struct {
 	File         string
 }
 
-// Database configuration
-// which is a map where key is the name of the database connection and 
-// value is the corresponding data configuration.
-// The key is the default database is the default database, but also 
-// the database used by the framework, and you can configure multiple 
-// databases to be used by your business tables to manage different databases.
+// Configuration de la base de données
+// qui est un map dans lequel la clé (key) est le nom de la connexion à la base de données et
+// La valeur (value) est la configuration de données correspondante.
+// La clé (key) est la base de données par défaut, mais aussi
+// la base de données utilisée par le framework, et vous pouvez configurer plusieurs
+// bases de données à utiliser par vos tables métier pour gérer différentes bases de données.
+
 type DatabaseList map[string]Database
 
-// Store is the file store config. Path is the local store path.
-// and prefix is the url prefix used to visit it.
+// Store est la configuration du stockage de fichiers. Path est le chemin du stockage local.
+// et prefix est le préfixe de l'url utilisé pour y accéder.
 type Store struct {
 	Path   string
 	Prefix string
 }
 
 
-// Config type is the global config of goAdmin. It will be
-// initialized in the engine.
+// Le type Config est la configuration globale de goAdmin. Elle sera
+// initialisée dans le moteur.
 type Config struct {
-	// An map supports multi database connection. The first
-	// element of Databases is the default connection. See the
-	// file connection.go.
+	// Un map supporte la connexion à plusieurs bases de données. Le premier
+	// élément de Databases est la connexion par défaut. Voir le
+	// fichier connection.go.
 	Databases DatabaseList `json:"database"`
 
-	// The cookie domain used in the auth modules. see
-	// the session.go.
+	// Le domaine du cookie utilisé dans les modules auth. cf.
+	// le fichier session.go.
 	Domain string `json:"domain"`
 
-	// Used to set as the localize language which show in the
-	// interface.
+	// Sert à définir la langue à utiliser qui sera affichée dans
+	// l'interface.
 	Language string `json:"language"`
 
-	// The global url prefix.
+	// Le préfixe global de l'URL.
 	UrlPrefix string `json:"prefix"`
 
-	// The theme name of template.
+	// Nom du thème du template
 	Theme string `json:"theme"`
 
-	// The path where files will be stored into.
+	// Le chemin dans lequel les fichiers seront stockés.
 	Store Store `json:"store"`
 
-	// The title of web page.
+	// Titre de la page Web.
 	Title string `json:"title"`
 
-	// Logo is the top text in the sidebar.
+	// Le logo est le texte supérieur de la barre latérale.
 	Logo template.HTML `json:"logo"`
 
-	// Mini-logo is the top text in the sidebar when folding.
+	// Le mini-logo est le texte supérieur de la barre latérale
+	// lorsqu'elle est pliée.
 	MiniLogo template.HTML `json:"mini_logo"`
 
-	// The url redirect to after login
+	// L'url à rediriger après la connexion
 	IndexUrl string `json:"index"`
 
-	// Debug mode
+	// Mode débogage
 	Debug bool `json:"debug"`
 
-	// Env is the environment, which maybe local, test, prod.
+	// Env est l'environnement, qui pourrait être local, test, prod.
 	Env string
 
-	// Info log path
+	// Chemin du journal d'information
 	InfoLogPath string `json:"info_log"`
 
-	// Error log path
+	// Chemin du journal d'erreurs
 	ErrorLogPath string `json:"error_log"`
 
-	// Access log path
+	// Chemin d'accès aux journaux
 	AccessLogPath string `json:"access_log"`
 
-	// Sql operator record log switch
+	// Interrupteur d'enregistrement de l'opérateur Sql
 	SqlLog bool `json:"sql_log"`
 
 	AccessLogOff bool
 	InfoLogOff   bool
 	ErrorLogOff  bool
 
-	// Color scheme
+	// Schéma de couleurs
 	ColorScheme string `json:"color_scheme"`
 
-	// Session life time, unit is second.
+	// Durée de vie de la session, l'unité est la seconde.
 	SessionLifeTime int `json:"session_life_time"`
 
-	// Cdn link of assets
+	// Lien Cdn des actifs
 	AssetUrl string `json:"asset_url"`
 
-	// File upload engine, default "local"
+	// Moteur de téléversement des fichiers, par défaut "local".
 	FileUploadEngine FileUploadEngine `json:"file_upload_engine"`
 
-	// Custom html in the tag head.
+	// html personnalisé dans l'en-tête (head) de la balise.
 	CustomHeadHtml template.HTML `json:"custom_head_html"`
 
-	// Custom html after body.
+	// html personnalisé après le body.
 	CustomFootHtml template.HTML `json:"custom_foot_html"`
 
-	// Login page title
+	// Titre de la page de connexion
 	LoginTitle string `json:"login_title"`
 
-	// Login page logo
+	// Logo de la page de connexion
 	LoginLogo template.HTML `json:"login_logo"`
 }
 
@@ -232,4 +236,4 @@ type Config struct {
 
 <br>
 
-> English is not my main language. If any typo or wrong translation you found, you can help to translate in [github here](https://github.com/GoAdminGroup/docs). I will very appreciate it.
+> Le français n'est pas ma langue dominante. Si vous trouvez une quelconque faute de frappe ou de traduction, vous pouvez nous proposer votre aide pour la traduction sur [github here](https://github.com/GoAdminGroup/docs). Je vous en serai très reconnaissant.
