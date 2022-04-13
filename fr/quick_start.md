@@ -68,9 +68,10 @@ func main() {
 		Language: language.FR,
 	}
 
-	// Ajoutez la configuration et les plugins, utilisez la méthode Use pour accéder au framework web.
+	// Ajoutez la configuration et les plugins, utilisez la méthode "Use" 
+	// pour accéder au framework web.
 	_ = eng.AddConfig(cfg).
-		// About Generators，see: https://github.com/GoAdminGroup/go-admin/blob/master/examples/datamodel/tables.go
+		// A propos des générateurs，voir : https://github.com/GoAdminGroup/go-admin/blob/master/examples/datamodel/tables.go
 		AddGenerators(datamodel.Generators).
 		Use(r)
 
